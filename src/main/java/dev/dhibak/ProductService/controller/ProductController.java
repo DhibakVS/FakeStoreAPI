@@ -27,4 +27,9 @@ public class ProductController {
     public ProductDTO createProduct(@RequestBody ProductDTO productDTO){
         return productService.createProduct(productDTO);
     }
+
+    @PutMapping("/product/{id}")
+    public ProductDTO updateProduct(@PathVariable("id") int id, @RequestBody ProductDTO productDTO){
+        return productService.updateProduct(id,productDTO);
+    }
 }
