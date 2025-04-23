@@ -4,6 +4,9 @@ import dev.dhibak.ProductService.ProductServiceApplication;
 import dev.dhibak.ProductService.dto.ProductDTO;
 import dev.dhibak.ProductService.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,9 +21,14 @@ public class ProductController {
     }
 
     @GetMapping("/product/{id}")
-    public ProductDTO getProductById(@PathVariable("id") int id){
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable("id") int id){
+        if(id<=0){
+            throw new IllegalArgumentException("Product Doesn't exist");
+//            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        }
         ProductDTO response=productService.getProductById(id);
-        return response;
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
     }
 
     @PostMapping("/product")
@@ -36,5 +44,9 @@ public class ProductController {
     @DeleteMapping("/product/{id}")
     public Boolean deleteProduct(@PathVariable("id") int id){
         return productService.deleteProduct(id);
+    }
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleExceptions(Exception ex){
+        return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
     }
 }
