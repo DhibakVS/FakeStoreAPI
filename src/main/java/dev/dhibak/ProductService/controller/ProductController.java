@@ -4,9 +4,7 @@ import dev.dhibak.ProductService.ProductServiceApplication;
 import dev.dhibak.ProductService.dto.ProductDTO;
 import dev.dhibak.ProductService.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ProductController {
@@ -23,5 +21,10 @@ public class ProductController {
     public ProductDTO getProductById(@PathVariable("id") int id){
         ProductDTO response=productService.getProductById(id);
         return response;
+    }
+
+    @PostMapping("/product")
+    public ProductDTO createProduct(@RequestBody ProductDTO productDTO){
+        return productService.createProduct(productDTO);
     }
 }
