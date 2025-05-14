@@ -3,6 +3,7 @@ package dev.dhibak.ProductService.service;
 import dev.dhibak.ProductService.ProductServiceApplication;
 import dev.dhibak.ProductService.client.FakeStoreClient;
 import dev.dhibak.ProductService.dto.ProductDTO;
+import dev.dhibak.ProductService.dto.ProductProjection;
 import dev.dhibak.ProductService.exception.ProductNotFoundException;
 import dev.dhibak.ProductService.model.Product;
 import dev.dhibak.ProductService.repository.ProductRepository;
@@ -40,7 +41,7 @@ public class ProductService {
     }
     public Product UpdateProduct(int productId,Product newProduct){
         Product savedProduct=GetProduct(productId);
-        newProduct.setId(productId);
+        // newProduct.setId(productId);
         Product updatedProduct=productRepository.save(newProduct);
         return updatedProduct;
     }
@@ -60,5 +61,8 @@ public class ProductService {
     }
     public Boolean deleteProduct(int id){
         return fakeStoreClient.deleteProduct(id);
+    }
+    public ProductProjection getProductProjection(String productName){
+        return productRepository.findFirstByName(productName);
     }
 }

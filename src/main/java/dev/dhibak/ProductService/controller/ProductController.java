@@ -2,6 +2,7 @@ package dev.dhibak.ProductService.controller;
 
 import dev.dhibak.ProductService.ProductServiceApplication;
 import dev.dhibak.ProductService.dto.ProductDTO;
+import dev.dhibak.ProductService.dto.ProductProjection;
 import dev.dhibak.ProductService.model.Product;
 import dev.dhibak.ProductService.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @RestController
+@RequestMapping("/v1/") //Versioning - every API would be /v1/API
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -77,5 +78,10 @@ public class ProductController {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleExceptions(Exception ex){
         return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
+    }
+    @GetMapping("/product/projection/{name}")
+    public ResponseEntity<ProductProjection> GetProduct(@PathVariable("name") String name){
+        ProductProjection product=productService.getProductProjection(name);
+        return ResponseEntity.ok(product);
     }
 }
